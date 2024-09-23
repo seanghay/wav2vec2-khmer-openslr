@@ -1,5 +1,8 @@
 ## Wav2Vec2 with OpenSLR 42 (Khmer language)
 
+![image](https://github.com/user-attachments/assets/f03a4802-cd77-43f8-8f66-6b7149d25cbb)
+
+
 ```shell
 apt update -y
 apt install -y unzip tmux neovim
