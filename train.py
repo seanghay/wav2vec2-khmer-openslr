@@ -102,6 +102,7 @@ if __name__ == "__main__":
 
   training_args = TrainingArguments(
     output_dir=output_dir,
+    report_to="tensorboard",
     group_by_length=True,
     per_device_train_batch_size=64,
     eval_strategy="steps",

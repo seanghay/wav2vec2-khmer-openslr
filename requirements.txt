@@ -10,3 +10,4 @@ accelerate
 click
 jiwer
 gdown
+tensorboard
