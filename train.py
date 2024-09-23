@@ -13,14 +13,20 @@ from transformers import (
 )
 from data import create_dataset
 from data_collate import DataCollatorCTCWithPadding
+import click
 
 
-if __name__ == "__main__":
-  audio_dir = "km_kh_male/wavs"
-  metadata_file = "km_kh_male/line_index.tsv"
-  model_id = "facebook/wav2vec2-base"
-  output_dir = "result"
-
+@click.command()
+@click.option("--audio_dir", help="Audio directory", default="km_kh_male/wavs")
+@click.option(
+  "--metadata_file", help="Metadata file", default="km_kh_male/line_index.tsv"
+)
+@click.option("--model_id", help="Model ID", default="facebook/wav2vec2-base")
+@click.option("--output_dir", help="Output dir", default="result")
+@click.option("--model_path", help="Model output path", default="model")
+@click.option("--batch_size", type=click.INT, help="Per device batch size", default=32)
+@click.option("--epoch", type=click.INT, default=30)
+def train(audio_dir, metadata_file, model_id, output_dir, batch_size, epoch, model_path):
   audio_dataset, vocab_dict = create_dataset(
     metadata_file=metadata_file, audio_dir=audio_dir
   )
@@ -99,9 +105,9 @@ if __name__ == "__main__":
     output_dir=output_dir,
     report_to="tensorboard",
     group_by_length=True,
-    per_device_train_batch_size=32,
+    per_device_train_batch_size=batch_size,
     eval_strategy="steps",
-    num_train_epochs=10,
+    num_train_epochs=epoch,
     fp16=True,
     save_steps=100,
     eval_steps=100,
@@ -126,5 +132,9 @@ if __name__ == "__main__":
   trainer.train()
 
   # save model when finished
-  model.save_pretrained("model")
-  processor.save_pretrained("model")
+  model.save_pretrained(model_path)
+  processor.save_pretrained(model_path)
+
+
+if __name__ == "__main__":
+  train()
