@@ -29,4 +29,8 @@ pip install -r requirements.txt
 
 ### Inference
 
+```python
+python inference.py samples/audio.wav
 
+# => វិធាណការ៍ ដាប បំរាំ គួរចរ ក្នុង រាជធានី ភ្នំពេញដើម បី ស្វត្ឋិភាព សហគម បាន អនប័តរ យ៉ាង រ្លូន
+```
