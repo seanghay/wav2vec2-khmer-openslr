@@ -14,8 +14,8 @@ from transformers import (
 from data import create_dataset
 from data_collate import DataCollatorCTCWithPadding
 
+
 if __name__ == "__main__":
-  device = "cuda"
   audio_dir = "km_kh_male/wavs"
   metadata_file = "km_kh_male/line_index.tsv"
   model_id = "facebook/wav2vec2-base"
@@ -77,14 +77,7 @@ if __name__ == "__main__":
       batch["labels"] = processor(batch["text"]).input_ids
     return batch
 
-  data = audio_dataset.map(
-    prepare_dataset,
-    num_proc=4,
-    remove_columns=audio_dataset.column_names,
-    cache_file_name="audio-data",
-    load_from_cache_file=True
-  )
-
+  data = audio_dataset.map(prepare_dataset, remove_columns=audio_dataset.column_names)
   data = data.train_test_split(test_size=0.1, shuffle=False, seed=42)
   data_collator = DataCollatorCTCWithPadding(processor=processor, padding=True)
 
@@ -106,15 +99,15 @@ if __name__ == "__main__":
     output_dir=output_dir,
     report_to="tensorboard",
     group_by_length=True,
-    per_device_train_batch_size=64,
+    per_device_train_batch_size=32,
     eval_strategy="steps",
     num_train_epochs=10,
     fp16=True,
-    save_steps=400,
-    eval_steps=400,
+    save_steps=100,
+    eval_steps=100,
     logging_steps=10,
     learning_rate=3e-4,
-    warmup_steps=400,
+    warmup_steps=100,
     save_total_limit=5,
     push_to_hub=False,
     load_best_model_at_end=True,
@@ -131,3 +124,7 @@ if __name__ == "__main__":
   )
 
   trainer.train()
+
+  # save model when finished
+  model.save_pretrained("model")
+  processor.save_pretrained("model")
