@@ -29,6 +29,8 @@ pip install -r requirements.txt
 
 ### Inference
 
+Download the weights via: [GitHub Release](https://github.com/seanghay/wav2vec2-khmer-openslr/releases/tag/v1.0.0)
+
 ```python
 python inference.py samples/audio.wav
 
