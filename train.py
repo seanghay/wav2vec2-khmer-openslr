@@ -103,17 +103,18 @@ if __name__ == "__main__":
   training_args = TrainingArguments(
     output_dir=output_dir,
     group_by_length=True,
-    per_device_train_batch_size=16,
+    per_device_train_batch_size=64,
     eval_strategy="steps",
-    num_train_epochs=30,
+    num_train_epochs=10,
     fp16=True,
-    save_steps=400,
-    eval_steps=400,
-    logging_steps=400,
+    save_steps=100,
+    eval_steps=100,
+    logging_steps=100,
     learning_rate=3e-4,
-    warmup_steps=500,
+    warmup_steps=100,
     save_total_limit=5,
     push_to_hub=False,
+    load_best_model_at_end=True,
   )
 
   trainer = Trainer(
