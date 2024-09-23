@@ -1,6 +1,11 @@
 ## Wav2Vec2 with OpenSLR 42 (Khmer language)
 
 ```shell
+apt update -y
+apt install -y unzip tmux neovim
+```
+
+```shell
 conda create -n w2v2 python=3.8 --yes
 conda activate w2v2
 

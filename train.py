@@ -18,7 +18,7 @@ if __name__ == "__main__":
   device = "cuda"
   audio_dir = "km_kh_male/wavs"
   metadata_file = "km_kh_male/line_index.tsv"
-  model_id = "facebook/wav2vec2-xls-r-300m"
+  model_id = "facebook/wav2vec2-base"
   output_dir = "result"
 
   audio_dataset, vocab_dict = create_dataset(
@@ -81,6 +81,8 @@ if __name__ == "__main__":
     prepare_dataset,
     num_proc=4,
     remove_columns=audio_dataset.column_names,
+    cache_file_name="audio-data",
+    load_from_cache_file=True
   )
 
   data = data.train_test_split(test_size=0.1, shuffle=False, seed=42)
@@ -108,11 +110,11 @@ if __name__ == "__main__":
     eval_strategy="steps",
     num_train_epochs=10,
     fp16=True,
-    save_steps=100,
-    eval_steps=100,
-    logging_steps=100,
+    save_steps=400,
+    eval_steps=400,
+    logging_steps=10,
     learning_rate=3e-4,
-    warmup_steps=100,
+    warmup_steps=400,
     save_total_limit=5,
     push_to_hub=False,
     load_best_model_at_end=True,
